@@ -8,7 +8,7 @@ int start_end;
 int food_count = 0;
 int sleep_count = 0;
 int shower_count = 0;
-int game_count = 0;
+int play_count = 0;
 int level = 0;
 int happiness = 50;
 
@@ -156,12 +156,82 @@ void sleep_detail() {
 
 //씻기 세분화
 void shower_detail() {
+	int select_shower;
 
+	printf("\n\n<씻기>를 선택하셨습니다!\n\n");
+
+	printf("무엇으로 씻을까요? (1: 최고급 러쉬 배쓰밤, 2: 빠른 샤워): ");
+	scanf_s("%d", &select_shower);
+
+	if (select_shower == 1) {
+		printf("\n최고-급 러쉬 베쓰밤을 사용합니다!\n");
+		printf("\n보글보글 거품이 올라와서 %s는 너무 행복해보이네요..!\n", name_str);
+		printf("뽀..."); Sleep(1500);
+		printf("득..."); Sleep(1500);
+		printf("뽀..."); Sleep(1500);
+		printf("득..."); Sleep(1500);
+		printf("\n개운하게 목욕했습니다! %s의 기분이 행복합니다.\n", name_str);
+		happiness += 20;
+	}
+	else if (select_shower == 2) {
+		printf("\n빠른 샤워를 합니다!\n");
+		printf("뽀..."); Sleep(500);
+		printf("득..."); Sleep(500);
+		printf("뽀..."); Sleep(500);
+		printf("득..."); Sleep(500);
+		printf("\n광이 나게 씻었습니다! %s는 뿌듯합니다.\n", name_str);
+		happiness += 10;
+	}
+	else {
+		printf("\n다시 입력해주세요\n");
+		shower_detail();
+	}
 }
 
 //놀기 세분화
 void play_detail() {
+	int select_play;
 
+	printf("\n\n<놀기>를 선택하셨습니다!\n노는게 제일 좋아!\n\n");
+
+	printf("무엇을 하며 놀까요? (1: 최신 유행 놀이 참참참, 2: 유튜브 시청, 3: 독서): ");
+	scanf_s("%d", &select_play);
+
+	if (select_play == 1) {
+		//참참참 게임
+	}
+	else if (select_play == 2) {
+		printf("\n유튜브를 시청합니다! 유튜브는 참 재미있군요!\n");
+		Sleep(2000);
+		printf("!!!");
+		Sleep(500);
+		printf("\n앗, 벌써 시간이 이렇게나!!!\n하지만 참 재밌었습니다\n");
+		happiness += 10;
+	}
+	else if (select_play == 3) {
+		printf("\n독서를 합니다! 독서는 참 좋은 취미군요!\n");
+		srand(time(NULL));
+		int book_random = 0;
+		book_random = rand() % 2 + 1; //1, 2
+		if (book_random == 1) {
+			Sleep(2000);
+			printf("!!!");
+			Sleep(500);
+			printf("\n%s(은)는 책 한 권을 벌써 다 읽었습니다!\n대단한 %s!\n", name_str, name_str);
+			happiness += 10;
+		}
+		else if (book_random == 2) {
+			Sleep(2000);
+			printf("???");
+			Sleep(500);
+			printf("\n%s(은)는 책을 읽다 잠들었습니다!\n어째서인지 행복해보입니다\n", name_str);
+			happiness += 10;
+		}
+	}
+	else {
+		printf("\n다시 입력해주세요\n");
+		play_detail();
+	}
 }
 
 //메뉴 정하기
@@ -184,6 +254,7 @@ void menu() {
 	if (select_menu == 1) {
 		food_count++;
 		printf("\n\nfood_count: %d\n\n", food_count);
+		//레벨 1 푸드 카운트가 찼다고 알려주기
 		eat_detail();
 	}
 	else if (select_menu == 2) {
@@ -197,8 +268,8 @@ void menu() {
 		shower_detail();
 	}
 	else if (select_menu == 4) {
-		game_count++;
-		printf("\n\ngame_count: %d\n\n", game_count);
+		play_count++;
+		printf("\n\nplay_count: %d\n\n", play_count);
 		play_detail();
 	}
 	else {
@@ -224,6 +295,6 @@ int main(void)
 	start_or_end();
 	name();
 	menu();
-	//stat();
+	stat();
 	return 0;
 }

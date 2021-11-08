@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 char name_str[50]; //이름
 int start_end;
@@ -21,6 +22,7 @@ void sleep_detail();                                //자기 세분화
 void shower_detail();                               //씻기 세분화
 void play_detail();                                 //놀기 세분화
 void stat();                                        //스텟
+void happiness_ending();                            //행복도에 따른 엔딩 세분화
 
 //시작 화면 출력
 void print_start() {
@@ -82,7 +84,7 @@ void eat_detail() {
 		Sleep(1000);
 		printf("\n%s(이)의 배가 가득 찼습니다.\n", name_str);
 		printf("\n또한 %s(이)의 기분이 행복합니다.\n", name_str);
-		happiness += 20;
+		happiness += 30;
 	}
 	else if (select_eat == 2) {
 		printf("\n집에서 밥을 먹습니다.\n");
@@ -98,7 +100,7 @@ void eat_detail() {
 			printf("\n");
 			printf("\n기한이 지난 음식이었습니다!!!\n");
 			printf("\n%s(은)는 배탈이 나진 않았지만 기분은 울적합니다...\n", name_str);
-			happiness -= 30;
+			happiness -= 100;
 		}
 		else if (eat_random == 2) {
 			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
@@ -138,7 +140,7 @@ void sleep_detail() {
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("\n개운하게 일어났습니다! %s의 기분이 행복합니다.\n", name_str);
-		happiness += 20;
+		happiness += 50;
 	}
 	else if (select_sleep == 2) {
 		printf("\n평범한 침대에서 잡니다...\n");
@@ -146,7 +148,7 @@ void sleep_detail() {
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("\n%s는 일어났습니다! %s의 기분이 좋습니다.\n", name_str, name_str);
-		happiness += 10;
+		happiness += 20;
 	}
 	else {
 		printf("\n다시 입력해주세요\n");
@@ -171,7 +173,7 @@ void shower_detail() {
 		printf("뽀..."); Sleep(1500);
 		printf("득..."); Sleep(1500);
 		printf("\n개운하게 목욕했습니다! %s의 기분이 행복합니다.\n", name_str);
-		happiness += 20;
+		happiness += 50;
 	}
 	else if (select_shower == 2) {
 		printf("\n빠른 샤워를 합니다!\n");
@@ -180,7 +182,7 @@ void shower_detail() {
 		printf("뽀..."); Sleep(500);
 		printf("득..."); Sleep(500);
 		printf("\n광이 나게 씻었습니다! %s는 뿌듯합니다.\n", name_str);
-		happiness += 10;
+		happiness += 20;
 	}
 	else {
 		printf("\n다시 입력해주세요\n");
@@ -199,6 +201,46 @@ void play_detail() {
 
 	if (select_play == 1) {
 		//참참참 게임
+		printf("\n참참참 게임을 시작합니다!\n");
+		char cham_answer[50];
+
+		printf("어느 쪽을 고르시겠습니까? (왼쪽, 오른쪽, 가운데) >> ");
+		scanf_s("%s", cham_answer, 50); //왼쪽, 오른쪽, 가운데, left, right, center
+		if ((strcmp(cham_answer, "왼쪽") == 0) || strcmp(cham_answer, "left") == 0) {
+			printf("왼쪽 선택!\n");
+		}
+		else if (strcmp(cham_answer, "가운데") == 0 || strcmp(cham_answer, "center") == 0) {
+			printf("가운데 선택!\n");
+		}
+		else if (strcmp(cham_answer, "오른쪽") == 0 || strcmp(cham_answer, "right") == 0) {
+			printf("오른쪽 선택!\n");
+		}
+		else {
+			printf("잘못 입력하셨습니다.");
+			//다시 돌아가기
+		}
+		Sleep(1000);
+
+		srand((unsigned int)time(NULL));
+		int cham_random = 0;
+		cham_random = rand() % 3 + 1; //1, 2, 3
+		//int* left, center, right;
+		if (cham_random == 1) {
+			//left = &cham_random;
+			printf("\n%s는 왼쪽을 골랐습니다.\n", name_str);
+		}
+		else if (cham_random == 2) {
+			//center = &cham_random;
+			printf("\n%s는 가운데를 골랐습니다.\n", name_str);
+		}
+		else if (cham_random == 3) {
+			//right = &cham_random;
+			printf("\n%s는 오른쪽을 골랐습니다.\n", name_str);
+		}
+		//내가 먼저 선택 후 다마고치가 무엇을 선택했는지 출력
+		//나의 답과 다마고치 답과 비교하여 정답인지 아닌지 출력
+		//포인터 사용 or 입력을 정수값으로 받기
+		//이기면 행복도 +50, 돈 +100
 	}
 	else if (select_play == 2) {
 		printf("\n유튜브를 시청합니다! 유튜브는 참 재미있군요!\n");
@@ -206,7 +248,7 @@ void play_detail() {
 		printf("!!!");
 		Sleep(500);
 		printf("\n앗, 벌써 시간이 이렇게나!!!\n하지만 참 재밌었습니다\n");
-		happiness += 10;
+		happiness += 30;
 	}
 	else if (select_play == 3) {
 		printf("\n독서를 합니다! 독서는 참 좋은 취미군요!\n");
@@ -218,14 +260,14 @@ void play_detail() {
 			printf("!!!");
 			Sleep(500);
 			printf("\n%s(은)는 책 한 권을 벌써 다 읽었습니다!\n대단한 %s!\n", name_str, name_str);
-			happiness += 10;
+			happiness += 30;
 		}
 		else if (book_random == 2) {
 			Sleep(2000);
 			printf("???");
 			Sleep(500);
 			printf("\n%s(은)는 책을 읽다 잠들었습니다!\n어째서인지 행복해보입니다\n", name_str);
-			happiness += 10;
+			happiness += 30;
 		}
 	}
 	else {
@@ -247,6 +289,7 @@ void menu() {
 	printf("|   3. 씻기                                         |\n");
 	printf("|   4. 놀기                                         |\n");
 	printf("|   5. 스텟 확인                                    |\n");
+	printf("|                                                   |\n");
 	printf("|                                                   |\n");
 	printf("=====================================================\n");
 	scanf_s("%d", &select_menu);
@@ -272,6 +315,9 @@ void menu() {
 		printf("\n\nplay_count: %d\n\n", play_count);
 		play_detail();
 	}
+	else if (select_menu == 5) {
+		stat();
+	}
 	else {
 		printf("\n%s(이)가 슬퍼합니다. 다시 골라주십시오\n", name_str);
 		menu();
@@ -289,12 +335,18 @@ void stat() {
 	printf("================================================\n");
 }
 
+//행복도에 따른 엔딩 세분화
+void happiness_ending() {
+
+}
+
 int main(void)
 {
 	print_start();
 	start_or_end();
 	name();
 	menu();
-	stat();
+	//stat();
+	happiness_ending();
 	return 0;
 }

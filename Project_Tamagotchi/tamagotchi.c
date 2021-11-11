@@ -12,6 +12,7 @@ int shower_count = 0;
 int play_count = 0;
 int level = 0;
 int happiness = 50;
+int money = 0; //소지금
 
 void print_start();                                 //시작 화면 출력
 void start_or_end();                                //시작 메뉴 출력
@@ -23,6 +24,7 @@ void shower_detail();                               //씻기 세분화
 void play_detail();                                 //놀기 세분화
 void stat();                                        //스텟
 void happiness_ending();                            //행복도에 따른 엔딩 세분화
+void my_money();                                    //소지금 출력
 
 //시작 화면 출력
 void print_start() {
@@ -89,7 +91,7 @@ void eat_detail() {
 	else if (select_eat == 2) {
 		printf("\n집에서 밥을 먹습니다.\n");
 		Sleep(1000);
-		srand(time(NULL));
+		srand((unsigned int)time(NULL));
 		int eat_random;
 		eat_random = rand() % 5 + 1; //1, 2, 3, 4, 5
 		if (eat_random == 1) {
@@ -206,7 +208,7 @@ void play_detail() {
 
 		printf("어느 쪽을 고르시겠습니까? (왼쪽, 오른쪽, 가운데) >> ");
 		scanf_s("%s", cham_answer, 50); //왼쪽, 오른쪽, 가운데, left, right, center
-		if ((strcmp(cham_answer, "왼쪽") == 0) || strcmp(cham_answer, "left") == 0) {
+		if (strcmp(cham_answer, "왼쪽") == 0 || strcmp(cham_answer, "left") == 0) {
 			printf("왼쪽 선택!\n");
 		}
 		else if (strcmp(cham_answer, "가운데") == 0 || strcmp(cham_answer, "center") == 0) {
@@ -252,7 +254,7 @@ void play_detail() {
 	}
 	else if (select_play == 3) {
 		printf("\n독서를 합니다! 독서는 참 좋은 취미군요!\n");
-		srand(time(NULL));
+		srand((unsigned int)time(NULL));
 		int book_random = 0;
 		book_random = rand() % 2 + 1; //1, 2
 		if (book_random == 1) {
@@ -289,6 +291,7 @@ void menu() {
 	printf("|   3. 씻기                                         |\n");
 	printf("|   4. 놀기                                         |\n");
 	printf("|   5. 스텟 확인                                    |\n");
+	printf("|   6. 소지금 확인                                  |\n");
 	printf("|                                                   |\n");
 	printf("|                                                   |\n");
 	printf("=====================================================\n");
@@ -318,6 +321,9 @@ void menu() {
 	else if (select_menu == 5) {
 		stat();
 	}
+	else if (select_menu == 6) {
+		my_money();
+	}
 	else {
 		printf("\n%s(이)가 슬퍼합니다. 다시 골라주십시오\n", name_str);
 		menu();
@@ -335,9 +341,68 @@ void stat() {
 	printf("================================================\n");
 }
 
+void my_money() {
+	printf("================================================\n");
+	printf("|                                              |\n");
+	printf("|    소지금: %d                                |\n", money);
+	printf("|                                              |\n");
+	printf("================================================\n");
+}
+
 //행복도에 따른 엔딩 세분화
 void happiness_ending() {
-
+	//0이하
+	if (happiness < 0) {
+		printf("\n\n%s에게 무슨 짓을 저지른건가요?\n", name_str); Sleep(1000);
+		printf("%s(을)를 울리다니 참 잘 하셨습니다!\n", name_str); Sleep(1000);
+		printf("당신의 다마고치 %s(은)는 당신 곁을 떠나갑니다...\n", name_str); Sleep(1000);
+		printf("뭐... 게임을 플레이해주셔서 무척 감사드립니다!\n");
+	}
+	//0~20
+	else if ((0 <= happiness) && (happiness < 20)) {
+		printf("\n\n%s에게 무슨 일이 일어난건가요?\n", name_str); Sleep(1000);
+		printf("%s가 슬프게 울고있습니다!\n", name_str); Sleep(1000);
+		printf("당신의 다마고치 %s(은)는 슬피 울며 가출했습니다...\n", name_str); Sleep(1000);
+		printf("뭐... 게임을 플레이해주셔서 무척 감사드립니다!\n");
+	}
+	//20~40
+	else if ((20 <= happiness) && (happiness < 40)) {
+		printf("\n\n%s(은)는 심술이 난 걸까요?\n", name_str); Sleep(1000);
+		printf("%s의 기분이 좋아지기엔 아직 한참 먼 것 같네요!\n", name_str); Sleep(1000);
+		printf("다음번엔 분발하셔야겠습니다!\n"); Sleep(1000);
+		printf("게임을 플레이해주셔서 무척 감사드립니다!\n");
+	}
+	//40~60
+	else if ((40 <= happiness) && (happiness < 60)) {
+		printf("\n\n%s의 기분은 그럭저럭입니다.\n", name_str); Sleep(1000);
+		printf("%s의 기분이 좋아지기엔 조금 부족한 것 같네요!\n", name_str); Sleep(1000);
+		printf("다음번엔 분발하시리라 믿습니다!\n"); Sleep(1000);
+		printf("게임을 플레이해주셔서 무척 감사드립니다!\n");
+	}
+	//60~80
+	else if ((60 <= happiness) && (happiness < 80)) {
+		printf("\n\n%s의 기분은 좋습니다!\n", name_str); Sleep(1000);
+		printf("약간은 아쉽지만 지금 상황에 만족해보이는 것 같네요!\n"); Sleep(1000);
+		printf("게임을 플레이해주셔서 무척 감사드립니다!\n");
+	}
+	//80~100
+	else if ((80 <= happiness) && (happiness < 100)) {
+		printf("\n\n%s의 기분은 최고입니다!\n", name_str); Sleep(1000);
+		printf("당신은 다마고치 키우기의 고수군요!\n"); Sleep(1000);
+		printf("%s의 행복도 100을 넘기면 좋은 일이 생길수도...?\n", name_str); Sleep(1000);
+		printf("아무튼 게임을 플레이해주셔서 무척 감사드립니다!\n");
+	}
+	//100이상
+	else if (happiness >= 100) {
+		printf("\n\n%s의 기분은 당장이라도 날아갈 듯 합니다!\n", name_str); Sleep(1000);
+		printf("당신은 다마고치 키우기의 신이군요!\n"); Sleep(1000);
+		printf("행복도 100을 넘기기란 쉽지 않은데 넘기시다니...\n"); Sleep(1000);
+		printf("특별한 선물을 드리도록 하겠습니다...!\n"); Sleep(1000);
+		Sleep(2000);
+		printf("당신은 \'다마고치의 보은\'을 얻었습니다!\n"); Sleep(1000);
+		printf("이제부터 당신의 모든 코드는 \"완벽한 성공률\"을 보입니다!\n"); Sleep(1000);
+		printf("게임을 플레이해주셔서 무척 감사드립니다!\n");
+	}
 }
 
 int main(void)

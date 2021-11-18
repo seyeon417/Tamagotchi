@@ -81,13 +81,24 @@ void eat_detail() {
 
 	printf("상점에 가시겠습니까? (1: 네, 2: 아니오): ");
 	scanf_s("%d", &select_eat);
-	if (select_eat == 1) {
+
+	//상점에 가고 싶으나 돈이 없는 경우
+	if ((select_eat == 1) && (money < 300)) {
+		printf("현재 %s의 소지금이 부족합니다.\n", name_str);
+		printf("다시 선택해주십시오.\n");
+		eat_detail();
+	}
+	//상점에 가고 싶으나 돈이 있는 경우
+	else if ((select_eat == 1) && (money >= 300)) {
 		printf("\n와! 마트로 갑니다!\n");
 		Sleep(1000);
 		printf("\n%s(이)의 배가 가득 찼습니다.\n", name_str);
 		printf("\n또한 %s(이)의 기분이 행복합니다.\n", name_str);
+		printf("마트에서 300원을 지출했습니다.\n");
+		money -= 300;
 		happiness += 30;
 	}
+	//상점에 가고 싶지 않은 경우
 	else if (select_eat == 2) {
 		printf("\n집에서 밥을 먹습니다.\n");
 		Sleep(1000);
@@ -102,25 +113,36 @@ void eat_detail() {
 			printf("\n");
 			printf("\n기한이 지난 음식이었습니다!!!\n");
 			printf("\n%s(은)는 배탈이 나진 않았지만 기분은 울적합니다...\n", name_str);
+			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			money += 100;
 			happiness -= 100;
 		}
 		else if (eat_random == 2) {
 			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
+			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			money += 100;
 			happiness += 10;
 		}
 		else if (eat_random == 3) {
 			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
+			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			money += 100;
 			happiness += 10;
 		}
 		else if (eat_random == 4) {
 			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
+			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			money += 100;
 			happiness += 10;
 		}
 		else if (eat_random == 5) {
 			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
+			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			money += 100;
 			happiness += 10;
 		}
 	}
+	//잘못 입력한 경우
 	else {
 		printf("\n다시 입력해주세요\n");
 		eat_detail();
@@ -136,22 +158,36 @@ void sleep_detail() {
 	printf("어디서 잘까요? (1: 푹신푹신 침대, 2: 평범한 침대): ");
 	scanf_s("%d", &select_sleep);
 
-	if (select_sleep == 1) {
+
+	//푹신푹신 침대에서 자고 싶으나 돈이 없는 경우
+	if ((select_sleep == 1) && (money < 200)) {
+		printf("현재 %s의 소지금이 부족합니다.\n", name_str);
+		printf("다시 선택해주십시오.\n");
+		sleep_detail();
+	}
+	//푹신푹신 침대에서 자고 싶으나 돈이 있는 경우
+	else if ((select_sleep == 1) && (money >= 200)) {
 		printf("\n푹신푹신한 침대에서 잡니다...\n");
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("\n개운하게 일어났습니다! %s의 기분이 행복합니다.\n", name_str);
+		printf("푹신푹신 침대에서 잤기 때문에 200원을 지출했습니다.\n");
+		money -= 200;
 		happiness += 50;
 	}
+	//평범한 침대에서 자고 싶은 경우
 	else if (select_sleep == 2) {
 		printf("\n평범한 침대에서 잡니다...\n");
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("\n%s는 일어났습니다! %s의 기분이 좋습니다.\n", name_str, name_str);
+		printf("평범한 침대로 돈을 아꼈습니다.\n");
+		money += 100;
 		happiness += 20;
 	}
+	//잘못 입력한 경우
 	else {
 		printf("\n다시 입력해주세요\n");
 		sleep_detail();
@@ -167,7 +203,14 @@ void shower_detail() {
 	printf("무엇으로 씻을까요? (1: 최고급 러쉬 배쓰밤, 2: 빠른 샤워): ");
 	scanf_s("%d", &select_shower);
 
-	if (select_shower == 1) {
+	//최고급 씻기를 하고 싶으나 돈이 없는 경우
+	if ((select_shower == 1) && (money < 500)) {
+		printf("현재 %s의 소지금이 부족합니다.\n", name_str);
+		printf("다시 선택해주십시오.\n");
+		shower_detail();
+	}
+	//최고급 씻기를 하고 싶으나 돈이 있는 경우
+	else if ((select_shower == 1) && (money >= 500)) {
 		printf("\n최고-급 러쉬 베쓰밤을 사용합니다!\n");
 		printf("\n보글보글 거품이 올라와서 %s는 너무 행복해보이네요..!\n", name_str);
 		printf("뽀..."); Sleep(1500);
@@ -175,8 +218,11 @@ void shower_detail() {
 		printf("뽀..."); Sleep(1500);
 		printf("득..."); Sleep(1500);
 		printf("\n개운하게 목욕했습니다! %s의 기분이 행복합니다.\n", name_str);
+		printf("최고-급 러쉬 배쓰밤으로 500원을 지출했습니다.\n");
+		money -= 500;
 		happiness += 50;
 	}
+	//빠른 샤워를 하고 싶은 경우
 	else if (select_shower == 2) {
 		printf("\n빠른 샤워를 합니다!\n");
 		printf("뽀..."); Sleep(500);
@@ -184,8 +230,11 @@ void shower_detail() {
 		printf("뽀..."); Sleep(500);
 		printf("득..."); Sleep(500);
 		printf("\n광이 나게 씻었습니다! %s는 뿌듯합니다.\n", name_str);
+		printf("빠른 샤워를 한 관계로 100원을 아꼈습니다.\n");
+		money += 100;
 		happiness += 20;
 	}
+	//잘못 입력한 경우
 	else {
 		printf("\n다시 입력해주세요\n");
 		shower_detail();
@@ -262,6 +311,8 @@ void play_detail() {
 			printf("!!!");
 			Sleep(500);
 			printf("\n%s(은)는 책 한 권을 벌써 다 읽었습니다!\n대단한 %s!\n", name_str, name_str);
+			printf("독서로 마음의 양식 100원을 쌓았습니다.\n");
+			money += 100;
 			happiness += 30;
 		}
 		else if (book_random == 2) {

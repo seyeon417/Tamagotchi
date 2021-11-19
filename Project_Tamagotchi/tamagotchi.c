@@ -22,6 +22,7 @@ void eat_detail();                                  //먹기 세분화
 void sleep_detail();                                //자기 세분화
 void shower_detail();                               //씻기 세분화
 void play_detail();                                 //놀기 세분화
+void cham_game();
 void stat();                                        //스텟
 void happiness_ending();                            //행복도에 따른 엔딩 세분화
 void my_money();                                    //소지금 출력
@@ -252,46 +253,7 @@ void play_detail() {
 
 	if (select_play == 1) {
 		//참참참 게임
-		printf("\n참참참 게임을 시작합니다!\n");
-		char cham_answer[50];
-
-		printf("어느 쪽을 고르시겠습니까? (왼쪽, 오른쪽, 가운데) >> ");
-		scanf_s("%s", cham_answer, 50); //왼쪽, 오른쪽, 가운데, left, right, center
-		if (strcmp(cham_answer, "왼쪽") == 0 || strcmp(cham_answer, "left") == 0) {
-			printf("왼쪽 선택!\n");
-		}
-		else if (strcmp(cham_answer, "가운데") == 0 || strcmp(cham_answer, "center") == 0) {
-			printf("가운데 선택!\n");
-		}
-		else if (strcmp(cham_answer, "오른쪽") == 0 || strcmp(cham_answer, "right") == 0) {
-			printf("오른쪽 선택!\n");
-		}
-		else {
-			printf("잘못 입력하셨습니다.");
-			//다시 돌아가기
-		}
-		Sleep(1000);
-
-		srand((unsigned int)time(NULL));
-		int cham_random = 0;
-		cham_random = rand() % 3 + 1; //1, 2, 3
-		//int* left, center, right;
-		if (cham_random == 1) {
-			//left = &cham_random;
-			printf("\n%s는 왼쪽을 골랐습니다.\n", name_str);
-		}
-		else if (cham_random == 2) {
-			//center = &cham_random;
-			printf("\n%s는 가운데를 골랐습니다.\n", name_str);
-		}
-		else if (cham_random == 3) {
-			//right = &cham_random;
-			printf("\n%s는 오른쪽을 골랐습니다.\n", name_str);
-		}
-		//내가 먼저 선택 후 다마고치가 무엇을 선택했는지 출력
-		//나의 답과 다마고치 답과 비교하여 정답인지 아닌지 출력
-		//포인터 사용 or 입력을 정수값으로 받기
-		//이기면 행복도 +50, 돈 +100
+		cham_game();
 	}
 	else if (select_play == 2) {
 		printf("\n유튜브를 시청합니다! 유튜브는 참 재미있군요!\n");
@@ -326,6 +288,98 @@ void play_detail() {
 	else {
 		printf("\n다시 입력해주세요\n");
 		play_detail();
+	}
+}
+
+//참참참 게임
+void cham_game() {
+	printf("\n참참참 게임을 시작합니다!\n");
+	char cham_answer[50] = { 0, }; //나의 답
+
+	printf("어느 쪽을 고르시겠습니까? (left, center, right) >> ");
+	scanf_s("%s", cham_answer, 50); //left, right, center
+	if (strcmp(cham_answer, "left") == 0) {
+		printf("\n왼쪽 선택!\n");
+	}
+	else if (strcmp(cham_answer, "center") == 0) {
+		printf("\n가운데 선택!\n");
+	}
+	else if (strcmp(cham_answer, "right") == 0) {
+		printf("\n오른쪽 선택!\n");
+	}
+	else {
+		printf("\n잘못 입력하셨습니다.\n");
+		cham_game();
+	}
+	Sleep(1000);
+	printf("다"); Sleep(500);
+	printf("마"); Sleep(500);
+	printf("고"); Sleep(500);
+	printf("치"); Sleep(500);
+	printf("가"); Sleep(500);
+	printf(" "); Sleep(500);
+	printf("고"); Sleep(500);
+	printf("르"); Sleep(500);
+	printf("는"); Sleep(500);
+	printf("중"); Sleep(500);
+	printf("입"); Sleep(500);
+	printf("니"); Sleep(500);
+	printf("다"); Sleep(500);
+
+	srand((unsigned int)time(NULL));
+	int cham_random = 0; //다마고치의 답
+	cham_random = rand() % 3 + 1; //1, 2, 3
+
+	if (cham_random == 1) {
+		printf("\n다마고치는 왼쪽을 골랐습니다.\n");
+		if (strcmp(cham_answer, "left") == 0) {
+			printf("\n맞혔습니다!\n");
+			printf("\n이겼으니 상금을 드리겠습니다!\n");
+			printf("\n다음에도 %s와 재밌게 놀아주세요!\n", name_str);
+			money += 500;
+			happiness += 20;
+		}
+		else if (strcmp(cham_answer, "left") != 0) {
+			printf("\n아! 아쉽게도 맞추지 못했습니다!\n");
+			printf("\n소정의 상금을 드리겠습니다!\n");
+			printf("\n하지만 %s는 이겨서 기분이 좋은 것 같군요!\n", name_str);
+			money += 100;
+			happiness += 50;
+		}
+	}
+	else if (cham_random == 2) {
+		printf("\n다마고치는 가운데를 골랐습니다.\n");
+		if (strcmp(cham_answer, "center") == 0) {
+			printf("\n맞혔습니다!\n");
+			printf("\n이겼으니 상금을 드리겠습니다!\n");
+			printf("\n다음에도 %s와 재밌게 놀아주세요!\n", name_str);
+			money += 500;
+			happiness += 20;
+		}
+		else if (strcmp(cham_answer, "center") != 0) {
+			printf("\n아! 아쉽게도 맞추지 못했습니다!\n");
+			printf("\n소정의 상금을 드리겠습니다!\n");
+			printf("\n하지만 %s는 이겨서 기분이 좋은 것 같군요!\n", name_str);
+			money += 100;
+			happiness += 50;
+		}
+	}
+	else if (cham_random == 3) {
+		printf("\n다마고치는 오른쪽을 골랐습니다.\n");
+		if (strcmp(cham_answer, "right") == 0) {
+			printf("\n맞혔습니다!\n");
+			printf("\n이겼으니 상금을 드리겠습니다!\n");
+			printf("\n다음에도 %s와 재밌게 놀아주세요!\n", name_str);
+			money += 500;
+			happiness += 20;
+		}
+		else if (strcmp(cham_answer, "right") != 0) {
+			printf("\n아! 아쉽게도 맞추지 못했습니다!\n");
+			printf("\n소정의 상금을 드리겠습니다!\n");
+			printf("\n하지만 %s는 이겨서 기분이 좋은 것 같군요!\n", name_str);
+			money += 100;
+			happiness += 50;
+		}
 	}
 }
 
@@ -462,7 +516,7 @@ int main(void)
 	start_or_end();
 	name();
 	menu();
-	//stat();
+	stat();
 	happiness_ending();
 	return 0;
 }

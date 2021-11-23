@@ -10,10 +10,11 @@ int food_count = 0;
 int sleep_count = 0;
 int shower_count = 0;
 int play_count = 0;
-int level = 0;
-int happiness = 50;
+int level = 1;
+int happiness = 0;
 int money = 0; //소지금
 
+void opening();                                     //오프닝
 void print_start();                                 //시작 화면 출력
 void start_or_end();                                //시작 메뉴 출력
 void name();                                        //이름 정하기
@@ -22,10 +23,31 @@ void eat_detail();                                  //먹기 세분화
 void sleep_detail();                                //자기 세분화
 void shower_detail();                               //씻기 세분화
 void play_detail();                                 //놀기 세분화
-void cham_game();
+void cham_game();                                   //참참참 게임
 void stat();                                        //스텟
+void level_status();                                //레벨 달성 상태
 void happiness_ending();                            //행복도에 따른 엔딩 세분화
 void my_money();                                    //소지금 출력
+void lv1_to_lv2();                                  //레벨 1에서 레벨 2로
+void lv2_to_lv3();                                  //레벨 2에서 레벨 3로
+void lv3_to_lv4();                                  //레벨 3에서 레벨 4로
+void lv4_to_lv5();                                  //레벨 4에서 레벨 5로
+void ending();                                      //엔딩
+
+//게임 룰 출력
+void opening() {
+	printf("안녕하세요!");
+	printf("\"나만의 다마고치\"게임에 오신 여러분 환영합니다\n");
+	printf("여러분은 지금부터 당신의 다마고치와 함께 생활하게 됩니다\n");
+	printf("다마고치는 레벨 1부터 시작하며 레벨 5까지 성장시키는 것이 최종 목표입니다\n");
+	printf("각 레벨로 성장하려면...\n");
+	printf("현재의 레벨 n당 기능들을 n번 이상씩 실행해야 레벨업할 수 있습니다\n");
+	printf("설명이 너무 어려우신가요?\n");
+	printf("백문이 불여일견!\n");
+	printf("그런 당신을 위해서 레벨 달성 상태 메뉴를 넣었습니다!\n");
+	printf("그럼 이제부터 당신의 다마고치와 여행을 떠나볼까요?\n");
+	printf("다마고치가 항상 행복하길..! 행운을 빕니다..!\n");
+}
 
 //시작 화면 출력
 void print_start() {
@@ -48,20 +70,22 @@ void print_start() {
 void start_or_end() {
 	printf("\n입력하십시오>> ");
 	scanf_s("%d", &start_end);
+	while (getchar() != '\n');
 	switch (start_end) {
 	case 1:
-		printf("\n게임을 시작합니다.\n\n");
+		printf("\n게임을 시작합니다\n\n");
 		printf("."); Sleep(500);
 		printf("."); Sleep(500);
 		printf("."); Sleep(500);
 		system("cls");
 		break;
 	case 2:
-		printf("\n게임을 종료합니다.\n");
+		printf("\n게임을 종료합니다\n");
 		exit(0);
 		break;
 	default:
-		printf("\n잘못 입력하셨습니다.\n");
+		printf("\n잘못 입력하셨습니다\n");
+		printf("다시 입력해주세요\n");
 		start_or_end();
 		break;
 	}
@@ -71,6 +95,7 @@ void start_or_end() {
 void name() {
 	printf("\n\n당신의 다마고치 이름은? ");
 	scanf_s("%s", name_str, 50);
+	while (getchar() != '\n');
 	printf("\n\n%s(으)로 정해졌습니다! %s(은)는 행복합니다!\n\n", name_str, name_str); //name_str에 저장됨
 }
 
@@ -82,26 +107,27 @@ void eat_detail() {
 
 	printf("상점에 가시겠습니까? (1: 네, 2: 아니오): ");
 	scanf_s("%d", &select_eat);
+	while (getchar() != '\n');
 
 	//상점에 가고 싶으나 돈이 없는 경우
 	if ((select_eat == 1) && (money < 300)) {
-		printf("현재 %s의 소지금이 부족합니다.\n", name_str);
-		printf("다시 선택해주십시오.\n");
+		printf("현재 %s의 소지금이 부족합니다\n", name_str);
+		printf("다시 입력해주세요\n");
 		eat_detail();
 	}
 	//상점에 가고 싶으나 돈이 있는 경우
 	else if ((select_eat == 1) && (money >= 300)) {
 		printf("\n와! 마트로 갑니다!\n");
 		Sleep(1000);
-		printf("\n%s(이)의 배가 가득 찼습니다.\n", name_str);
-		printf("\n또한 %s(이)의 기분이 행복합니다.\n", name_str);
-		printf("마트에서 300원을 지출했습니다.\n");
+		printf("\n%s(이)의 배가 가득 찼습니다\n", name_str);
+		printf("\n또한 %s(이)의 기분이 행복합니다\n", name_str);
+		printf("마트에서 300원을 지출했습니다\n");
 		money -= 300;
-		happiness += 30;
+		happiness += 20;
 	}
 	//상점에 가고 싶지 않은 경우
 	else if (select_eat == 2) {
-		printf("\n집에서 밥을 먹습니다.\n");
+		printf("\n집에서 밥을 먹습니다\n");
 		Sleep(1000);
 		srand((unsigned int)time(NULL));
 		int eat_random;
@@ -114,33 +140,33 @@ void eat_detail() {
 			printf("\n");
 			printf("\n기한이 지난 음식이었습니다!!!\n");
 			printf("\n%s(은)는 배탈이 나진 않았지만 기분은 울적합니다...\n", name_str);
-			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			printf("마트에 가지 않고 집에서 먹어 돈을 얻었습니다\n");
 			money += 100;
 			happiness -= 100;
 		}
 		else if (eat_random == 2) {
-			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
-			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			printf("\n%s(이)의 배가 어느정도 찼습니다\n", name_str);
+			printf("마트에 가지 않고 집에서 먹어 돈을 얻었습니다\n");
 			money += 100;
-			happiness += 10;
+			happiness += 5;
 		}
 		else if (eat_random == 3) {
-			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
-			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			printf("\n%s(이)의 배가 어느정도 찼습니다\n", name_str);
+			printf("마트에 가지 않고 집에서 먹어 돈을 얻었습니다\n");
 			money += 100;
-			happiness += 10;
+			happiness += 5;
 		}
 		else if (eat_random == 4) {
 			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
-			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			printf("마트에 가지 않고 집에서 먹어 돈을 얻었습니다\n");
 			money += 100;
-			happiness += 10;
+			happiness += 5;
 		}
 		else if (eat_random == 5) {
 			printf("\n%s(이)의 배가 어느정도 찼습니다.\n", name_str);
-			printf("마트에 가지 않고 집에서 먹어 돈을 아꼈습니다.\n");
+			printf("마트에 가지 않고 집에서 먹어 돈을 얻었습니다\n");
 			money += 100;
-			happiness += 10;
+			happiness += 5;
 		}
 	}
 	//잘못 입력한 경우
@@ -158,12 +184,12 @@ void sleep_detail() {
 
 	printf("어디서 잘까요? (1: 푹신푹신 침대, 2: 평범한 침대): ");
 	scanf_s("%d", &select_sleep);
-
+	while (getchar() != '\n');
 
 	//푹신푹신 침대에서 자고 싶으나 돈이 없는 경우
 	if ((select_sleep == 1) && (money < 200)) {
-		printf("현재 %s의 소지금이 부족합니다.\n", name_str);
-		printf("다시 선택해주십시오.\n");
+		printf("현재 %s의 소지금이 부족합니다\n", name_str);
+		printf("다시 입력해주세요\n");
 		sleep_detail();
 	}
 	//푹신푹신 침대에서 자고 싶으나 돈이 있는 경우
@@ -172,10 +198,10 @@ void sleep_detail() {
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
-		printf("\n개운하게 일어났습니다! %s의 기분이 행복합니다.\n", name_str);
-		printf("푹신푹신 침대에서 잤기 때문에 200원을 지출했습니다.\n");
+		printf("\n개운하게 일어났습니다! %s의 기분이 행복합니다\n", name_str);
+		printf("푹신푹신 침대에서 잤기 때문에 200원을 지출했습니다\n");
 		money -= 200;
-		happiness += 50;
+		happiness += 20;
 	}
 	//평범한 침대에서 자고 싶은 경우
 	else if (select_sleep == 2) {
@@ -183,10 +209,10 @@ void sleep_detail() {
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
 		printf("Z..."); Sleep(1500);
-		printf("\n%s는 일어났습니다! %s의 기분이 좋습니다.\n", name_str, name_str);
-		printf("평범한 침대로 돈을 아꼈습니다.\n");
+		printf("\n%s는 일어났습니다! %s의 기분이 좋습니다\n", name_str, name_str);
+		printf("평범한 침대로 돈을 얻었습니다\n");
 		money += 100;
-		happiness += 20;
+		happiness += 5;
 	}
 	//잘못 입력한 경우
 	else {
@@ -203,11 +229,12 @@ void shower_detail() {
 
 	printf("무엇으로 씻을까요? (1: 최고급 러쉬 배쓰밤, 2: 빠른 샤워): ");
 	scanf_s("%d", &select_shower);
+	while (getchar() != '\n');
 
 	//최고급 씻기를 하고 싶으나 돈이 없는 경우
 	if ((select_shower == 1) && (money < 500)) {
-		printf("현재 %s의 소지금이 부족합니다.\n", name_str);
-		printf("다시 선택해주십시오.\n");
+		printf("현재 %s의 소지금이 부족합니다\n", name_str);
+		printf("다시 입력해주세요\n");
 		shower_detail();
 	}
 	//최고급 씻기를 하고 싶으나 돈이 있는 경우
@@ -218,10 +245,10 @@ void shower_detail() {
 		printf("득..."); Sleep(1500);
 		printf("뽀..."); Sleep(1500);
 		printf("득..."); Sleep(1500);
-		printf("\n개운하게 목욕했습니다! %s의 기분이 행복합니다.\n", name_str);
-		printf("최고-급 러쉬 배쓰밤으로 500원을 지출했습니다.\n");
+		printf("\n개운하게 목욕했습니다! %s의 기분이 행복합니다\n", name_str);
+		printf("최고-급 러쉬 배쓰밤으로 500원을 지출했습니다\n");
 		money -= 500;
-		happiness += 50;
+		happiness += 30;
 	}
 	//빠른 샤워를 하고 싶은 경우
 	else if (select_shower == 2) {
@@ -230,10 +257,10 @@ void shower_detail() {
 		printf("득..."); Sleep(500);
 		printf("뽀..."); Sleep(500);
 		printf("득..."); Sleep(500);
-		printf("\n광이 나게 씻었습니다! %s는 뿌듯합니다.\n", name_str);
-		printf("빠른 샤워를 한 관계로 100원을 아꼈습니다.\n");
+		printf("\n광이 나게 씻었습니다! %s는 뿌듯합니다\n", name_str);
+		printf("빠른 샤워를 한 관계로 100원을 얻었습니다\n");
 		money += 100;
-		happiness += 20;
+		happiness += 5;
 	}
 	//잘못 입력한 경우
 	else {
@@ -250,6 +277,7 @@ void play_detail() {
 
 	printf("무엇을 하며 놀까요? (1: 최신 유행 놀이 참참참, 2: 유튜브 시청, 3: 독서): ");
 	scanf_s("%d", &select_play);
+	while (getchar() != '\n');
 
 	if (select_play == 1) {
 		//참참참 게임
@@ -261,7 +289,7 @@ void play_detail() {
 		printf("!!!");
 		Sleep(500);
 		printf("\n앗, 벌써 시간이 이렇게나!!!\n하지만 참 재밌었습니다\n");
-		happiness += 30;
+		happiness += 5;
 	}
 	else if (select_play == 3) {
 		printf("\n독서를 합니다! 독서는 참 좋은 취미군요!\n");
@@ -270,19 +298,21 @@ void play_detail() {
 		book_random = rand() % 2 + 1; //1, 2
 		if (book_random == 1) {
 			Sleep(2000);
-			printf("!!!");
-			Sleep(500);
+			printf("!"); Sleep(500);
+			printf("!"); Sleep(500);
+			printf("!"); Sleep(500);
 			printf("\n%s(은)는 책 한 권을 벌써 다 읽었습니다!\n대단한 %s!\n", name_str, name_str);
-			printf("독서로 마음의 양식 100원을 쌓았습니다.\n");
+			printf("독서로 마음의 양식 100원을 쌓았습니다\n");
 			money += 100;
-			happiness += 30;
+			happiness += 10;
 		}
 		else if (book_random == 2) {
 			Sleep(2000);
-			printf("???");
-			Sleep(500);
+			printf("?"); Sleep(500);
+			printf("?"); Sleep(500);
+			printf("?"); Sleep(500);
 			printf("\n%s(은)는 책을 읽다 잠들었습니다!\n어째서인지 행복해보입니다\n", name_str);
-			happiness += 30;
+			happiness += 5;
 		}
 	}
 	else {
@@ -298,6 +328,7 @@ void cham_game() {
 
 	printf("어느 쪽을 고르시겠습니까? (left, center, right) >> ");
 	scanf_s("%s", cham_answer, 50); //left, right, center
+	while (getchar() != '\n');
 	if (strcmp(cham_answer, "left") == 0) {
 		printf("\n왼쪽 선택!\n");
 	}
@@ -337,14 +368,14 @@ void cham_game() {
 			printf("\n이겼으니 상금을 드리겠습니다!\n");
 			printf("\n다음에도 %s와 재밌게 놀아주세요!\n", name_str);
 			money += 500;
-			happiness += 20;
+			happiness += 5;
 		}
 		else if (strcmp(cham_answer, "left") != 0) {
 			printf("\n아! 아쉽게도 맞추지 못했습니다!\n");
 			printf("\n소정의 상금을 드리겠습니다!\n");
 			printf("\n하지만 %s는 이겨서 기분이 좋은 것 같군요!\n", name_str);
 			money += 100;
-			happiness += 50;
+			happiness += 20;
 		}
 	}
 	else if (cham_random == 2) {
@@ -354,14 +385,14 @@ void cham_game() {
 			printf("\n이겼으니 상금을 드리겠습니다!\n");
 			printf("\n다음에도 %s와 재밌게 놀아주세요!\n", name_str);
 			money += 500;
-			happiness += 20;
+			happiness += 5;
 		}
 		else if (strcmp(cham_answer, "center") != 0) {
 			printf("\n아! 아쉽게도 맞추지 못했습니다!\n");
 			printf("\n소정의 상금을 드리겠습니다!\n");
 			printf("\n하지만 %s는 이겨서 기분이 좋은 것 같군요!\n", name_str);
 			money += 100;
-			happiness += 50;
+			happiness += 20;
 		}
 	}
 	else if (cham_random == 3) {
@@ -371,14 +402,14 @@ void cham_game() {
 			printf("\n이겼으니 상금을 드리겠습니다!\n");
 			printf("\n다음에도 %s와 재밌게 놀아주세요!\n", name_str);
 			money += 500;
-			happiness += 20;
+			happiness += 5;
 		}
 		else if (strcmp(cham_answer, "right") != 0) {
 			printf("\n아! 아쉽게도 맞추지 못했습니다!\n");
 			printf("\n소정의 상금을 드리겠습니다!\n");
 			printf("\n하지만 %s는 이겨서 기분이 좋은 것 같군요!\n", name_str);
 			money += 100;
-			happiness += 50;
+			happiness += 20;
 		}
 	}
 }
@@ -396,37 +427,37 @@ void menu() {
 	printf("|   3. 씻기                                         |\n");
 	printf("|   4. 놀기                                         |\n");
 	printf("|   5. 스텟 확인                                    |\n");
-	printf("|   6. 소지금 확인                                  |\n");
+	printf("|   6. 레벨 달성 상태 확인                          |\n");
+	printf("|   7. 소지금 확인                                  |\n");
 	printf("|                                                   |\n");
 	printf("|                                                   |\n");
 	printf("=====================================================\n");
 	scanf_s("%d", &select_menu);
+	while (getchar() != '\n');
 
 	if (select_menu == 1) {
 		food_count++;
-		printf("\n\nfood_count: %d\n\n", food_count);
-		//레벨 1 푸드 카운트가 찼다고 알려주기
 		eat_detail();
 	}
 	else if (select_menu == 2) {
 		sleep_count++;
-		printf("\n\nsleep_count: %d\n\n", sleep_count);
 		sleep_detail();
 	}
 	else if (select_menu == 3) {
 		shower_count++;
-		printf("\n\nshower_count: %d\n\n", shower_count);
 		shower_detail();
 	}
 	else if (select_menu == 4) {
 		play_count++;
-		printf("\n\nplay_count: %d\n\n", play_count);
 		play_detail();
 	}
 	else if (select_menu == 5) {
 		stat();
 	}
 	else if (select_menu == 6) {
+		level_status();
+	}
+	else if (select_menu == 7) {
 		my_money();
 	}
 	else {
@@ -440,22 +471,63 @@ void stat() {
 	printf("현재 %s의 스텟은?\n", name_str);
 	printf("================================================\n");
 	printf("|                                              |\n");
-	printf("|    레벨: %d                                  |\n", level);
-	printf("|    행복도: %d                                |\n", happiness);
+	printf("|    레벨: %5d                               |\n", level);
+	printf("|    행복도: %3d                               |\n", happiness);
 	printf("|                                              |\n");
 	printf("================================================\n");
 }
 
+//레벨 달성 상태 확인
+void level_status() {
+	printf("================================================\n");
+	printf("|                                              |\n");
+	//먹기
+	if (level - food_count <= 0) {
+		printf("|       레벨 %3d 달성조건: 먹기 완료           |\n", level + 1);
+	}
+	else {
+		printf("|       레벨 %3d 달성조건: 먹기 %d번 남음       |\n", level + 1, level - food_count);
+	}
+	//자기
+	if (level - sleep_count <= 0) {
+		printf("|       레벨 %3d 달성조건: 자기 완료           |\n", level + 1);
+	}
+	else {
+		printf("|       레벨 %3d 달성조건: 자기 %d번 남음       |\n", level + 1, level - sleep_count);
+	}
+	//씻기
+	if (level - shower_count <= 0) {
+		printf("|       레벨 %3d 달성조건: 씻기 완료           |\n", level + 1);
+	}
+	else {
+		printf("|       레벨 %3d 달성조건: 씻기 %d번 남음       |\n", level + 1, level - shower_count);
+	}
+	//놀기
+	if (level - play_count <= 0) {
+		printf("|       레벨 %3d 달성조건: 놀기 완료           |\n", level + 1);
+	}
+	else {
+		printf("|       레벨 %3d 달성조건: 놀기 %d번 남음       |\n", level + 1, level - play_count);
+	}
+	printf("|                                              |\n");
+	printf("================================================\n");
+}
+
+//소지금 확인
 void my_money() {
 	printf("================================================\n");
 	printf("|                                              |\n");
-	printf("|    소지금: %d                                |\n", money);
+	printf("|    소지금: %5d                             |\n", money);
 	printf("|                                              |\n");
 	printf("================================================\n");
 }
 
 //행복도에 따른 엔딩 세분화
 void happiness_ending() {
+	printf("================================================\n");
+	printf("|          다마고치 행복도 : %3d               |\n", happiness);
+	printf("================================================\n");
+
 	//0이하
 	if (happiness < 0) {
 		printf("\n\n%s에게 무슨 짓을 저지른건가요?\n", name_str); Sleep(1000);
@@ -479,7 +551,7 @@ void happiness_ending() {
 	}
 	//40~60
 	else if ((40 <= happiness) && (happiness < 60)) {
-		printf("\n\n%s의 기분은 그럭저럭입니다.\n", name_str); Sleep(1000);
+		printf("\n\n%s의 기분은 그럭저럭입니다\n", name_str); Sleep(1000);
 		printf("%s의 기분이 좋아지기엔 조금 부족한 것 같네요!\n", name_str); Sleep(1000);
 		printf("다음번엔 분발하시리라 믿습니다!\n"); Sleep(1000);
 		printf("게임을 플레이해주셔서 무척 감사드립니다!\n");
@@ -510,13 +582,87 @@ void happiness_ending() {
 	}
 }
 
+//레벨 1에서 레벨 2로
+void lv1_to_lv2() {
+	while (1) {
+		menu();
+		if ((food_count >= 1) && (sleep_count >= 1) && (shower_count >= 1) && (play_count >= 1)) {
+			printf("레벨 2로 진화!\n");
+			level = 2;
+			break;
+		}
+	}
+	food_count = 0;
+	sleep_count = 0;
+	shower_count = 0;
+	play_count = 0;
+}
+
+//레벨 2에서 레벨 3로
+void lv2_to_lv3() {
+	while (1) {
+		menu();
+		if ((food_count >= 2) && (sleep_count >= 2) && (shower_count >= 2) && (play_count >= 2)) {
+			printf("레벨 3으로 진화!\n");
+			level = 3;
+			break;
+		}
+	}
+	food_count = 0;
+	sleep_count = 0;
+	shower_count = 0;
+	play_count = 0;
+}
+
+//레벨 3에서 레벨 4로
+void lv3_to_lv4() {
+	while (1) {
+		menu();
+		if ((food_count >= 3) && (sleep_count >= 3) && (shower_count >= 3) && (play_count >= 3)) {
+			printf("레벨 4로 진화!\n");
+			level = 4;
+			break;
+		}
+	}
+	food_count = 0;
+	sleep_count = 0;
+	shower_count = 0;
+	play_count = 0;
+}
+
+//레벨 4에서 레벨 5로
+void lv4_to_lv5() {
+	while (1) {
+		menu();
+		if ((food_count >= 4) && (sleep_count >= 4) && (shower_count >= 4) && (play_count >= 4)) {
+			printf("레벨 5로 진화!\n");
+			level = 5;
+			break;
+		}
+	}
+}
+
+//엔딩
+void ending() {
+	printf("나만의 다마고치 키우기... 재밌으셨나요?\n");
+	printf("재밌게 즐겨주셨으면 좋겠습니다!\n");
+	printf("이제 나만의 다마고치 키우기 게임을 종료하도록 하겠습니다\n");
+	printf("이상으로 한남대학교 미디어영상전공 20190876 박세연이었습니다\n");
+	printf("감사합니다!\n");
+}
+
+//최종함수
 int main(void)
 {
+	opening();
 	print_start();
 	start_or_end();
 	name();
-	menu();
-	stat();
+	lv1_to_lv2();
+	lv2_to_lv3();
+	lv3_to_lv4();
+	lv4_to_lv5();
 	happiness_ending();
+	ending();
 	return 0;
 }
